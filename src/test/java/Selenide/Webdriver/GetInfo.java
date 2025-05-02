@@ -1,6 +1,8 @@
 package Selenide.Webdriver;
 
 import com.codeborne.selenide.*;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +11,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.time.Duration;
 import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +28,9 @@ public class GetInfo {
 
     @BeforeAll
     public static void setUp(){
+        // + Allure
+        SelenideLogger.addListener("AllureSelenide",new AllureSelenide());
+
         // дефолт = Хром, но можно изменить на другой
         // "safari" , "chrome" / "firefox"
         Configuration.browser = "firefox";
@@ -57,7 +64,8 @@ public class GetInfo {
     public void getTrs(){
         open("https:///sky-todo-list.herokuapp.com/");
         // поиск множества элементов
-        ElementsCollection rows = $$("tr").shouldHave(size(1));
+        ElementsCollection rows = $$("tr")
+                .shouldHave(sizeGreaterThan(0), Duration.ofSeconds(3));
 
     }
 }
