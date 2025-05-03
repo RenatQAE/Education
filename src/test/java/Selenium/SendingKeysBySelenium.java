@@ -21,8 +21,10 @@ public class SendingKeysBySelenium {
         driver = new ChromeDriver();
     }
     @AfterEach
-    public void tearDown(){
-        driver.quit();
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     @Test
